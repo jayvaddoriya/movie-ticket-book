@@ -88,7 +88,7 @@ export const getBookingsUsers = async (req, res, next) => {
   const id = req.params.id;
   let newBookings;
   try {
-    newBookings = await Booking.find({user:id});
+    newBookings = await Booking.find({ user: id });
   } catch (err) {
     return next(err);
   }

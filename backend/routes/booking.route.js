@@ -1,10 +1,14 @@
 import express from "express";
-import { deleteBooking, getBookingById, newBook } from "../controller/booking-controller";
+import {
+  deleteBooking,
+  getBookingById,
+  newBook,
+} from "../controller/booking-controller";
 
-const bookingRoute = express.Router()
+const bookingRoute = express.Router();
 
-bookingRoute.post("/",newBook)
-bookingRoute.get("/:id",getBookingById)
-bookingRoute.delete("/:id",deleteBooking)
+bookingRoute.post("/", newBook);
+bookingRoute.get("/:id", getBookingById);
+bookingRoute.delete("/:id", deleteBooking);
 
 export default bookingRoute;

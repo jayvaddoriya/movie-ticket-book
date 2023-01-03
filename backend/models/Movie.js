@@ -31,7 +31,7 @@ const movieSchema = new Shema({
   bookings: [
     {
       type: mongoose.Types.ObjectId,
-      ref:"Booking"
+      ref: "Booking",
     },
   ],
   admin: {
