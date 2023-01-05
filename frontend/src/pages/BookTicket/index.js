@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { useLocation } from "react-router-dom";
 import { Box } from "@mui/system";
-import { Fab, TextField } from "@mui/material";
+import { Alert, AlertTitle, Fab, TextField } from "@mui/material";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -21,6 +21,7 @@ const BookTicket = () => {
   const {
     state: { bookMovie },
   } = useLocation();
+  const [alert, setAlert] = useState(false);
   const formik = useFormik({
     initialValues: {
       seatNo: "",
@@ -33,8 +34,18 @@ const BookTicket = () => {
         date: moment(values.date).format("YYYY-MM-DD"),
       });
       formik.resetForm();
+      setAlert(true);
     },
   });
+
+  useEffect(() => {
+    if (!alert) {
+      setInterval(() => {
+        setAlert(false);
+      }, 3000);
+    }
+  }, [alert]);
+
   return (
     <>
       <Box
@@ -51,34 +62,42 @@ const BookTicket = () => {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          maxWidth:"1400px",
-          margin:"0 auto"
+          maxWidth: "1400px",
+          margin: "0 auto",
         }}
       >
-        <Card sx={{ maxWidth: 700 }}>
-          <CardMedia
-            component="img"
-            height="300"
-            image={bookMovie.image}
-            alt={bookMovie.title}
-          />
-          <CardContent>
-            <Typography gutterBottom variant="h4" component="div">
-              {bookMovie.title}
-            </Typography>
-            <Typography variant="h6" color="text.secondary">
-              Lizards are a widespread group of squamate reptiles, with over
-              6,000 species, ranging across all continents except Antarctica
-            </Typography>
-            <Typography variant="h6" color="primary">
-              Starrer : R. Madhavan
-            </Typography>
-            <Typography variant="h6" color="primary">
-              Release Date : {bookMovie.date}
-            </Typography>
-          </CardContent>
-        </Card>
-        <Box >
+        <Box>
+          <Card sx={{ maxWidth: 700 }}>
+            <CardMedia
+              component="img"
+              height="300"
+              image={bookMovie.image}
+              alt={bookMovie.title}
+            />
+            <CardContent>
+              <Typography gutterBottom variant="h4" component="div">
+                {bookMovie.title}
+              </Typography>
+              <Typography variant="h6" color="text.secondary">
+                Lizards are a widespread group of squamate reptiles, with over
+                6,000 species, ranging across all continents except Antarctica
+              </Typography>
+              <Typography variant="h6" color="primary">
+                Starrer : R. Madhavan
+              </Typography>
+              <Typography variant="h6" color="primary">
+                Release Date : {bookMovie.date}
+              </Typography>
+            </CardContent>
+          </Card>
+          {alert && (
+            <Alert onClose={() => setAlert(false)} severity="success">
+              <AlertTitle>Success</AlertTitle>
+              Booked Ticket
+            </Alert>
+          )}
+        </Box>
+        <Box>
           <form onSubmit={formik.handleSubmit} autoComplete="off">
             <TextField
               required
@@ -95,7 +114,7 @@ const BookTicket = () => {
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
                 label="Helper text example"
-                onChange={(value) => formik.setFieldValue("date", value, true)}
+                onChange={(value) => formik.setFieldValue("date", value)}
                 value={formik.values.date}
                 renderInput={(params) => (
                   <TextField
